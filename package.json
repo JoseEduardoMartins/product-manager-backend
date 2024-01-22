@@ -1,0 +1,40 @@
+{
+    "name": "product-manager-backend",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "",
+    "main": "./src/server.js",
+    "scripts": {
+        "dev": "nodemon --experimental-specifier-resolution=node src/server.js",
+        "format": "npx prettier --write ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JoseEduardoMartins/product-manager-backend.git"
+    },
+    "author": "JOsé Eduardo Martins",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/JoseEduardoMartins/product-manager-backend/issues"
+    },
+    "homepage": "https://github.com/JoseEduardoMartins/product-manager-backend#readme",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-validator": "^7.0.1",
+        "morgan": "^1.10.0",
+        "mysql": "^2.18.1"
+    },
+    "devDependencies": {
+        "husky": "^8.0.3",
+        "nodemon": "^3.0.2",
+        "prettier": "^3.1.1",
+        "pretty-quick": "^3.1.3"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    }
+}
