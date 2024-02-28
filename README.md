@@ -1,93 +1,73 @@
-# Contact Management System - Back-end
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-Este projeto é um sistema simples de gerenciamento de contatos desenvolvido em Node.js, com uma base de dados MySQL para armazenar informações de contato e seus números de telefone associados.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## Pré-requisitos
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-Certifique-se de ter as seguintes dependências instaladas antes de iniciar:
+## Description
 
--   [Node.js](https://nodejs.org/) (versão 16.17.0 ou superior)
--   MySQL (versão 8.0.35 ou superior)
--   Pacotes [npm](https://www.npmjs.com/) (Node Package Manager)
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Instruções de Configuração
-
-1. Clone o repositório
-
-```bash
-git clone https://github.com/JoseEduardoMartins/contacts-backend.git
-
-cd contacts-backend
-```
-
-2. Criar o Banco de Dados e adicionar Dados Iniciais:
-
-    - Se você ainda não o tiver instalado, siga as instruções na [documentação oficial](https://www.mysql.com/downloads/) para instalar o MySQL.
-
-    - Abra um terminal e execute o seguinte comando para criar um banco de dados e aplicar a estrutura inicial a partir do arquivo `schema.sql`:
-
-        ```
-        mysql -u seu_usuario -p sua_senha -h seu_host < ./database/schema.sql
-
-        ```
-
-    - Se você tiver um arquivo `seeds.sql` com dados iniciais, execute o seguinte comando para adicioná-los:
-        ```
-        mysql -u seu_usuario -p sua_senha -h seu_host < ./database/seed.sql
-        ```
-
-3. Instale as dependências:
+## Installation
 
 ```bash
- npm install
+$ npm install
 ```
 
-6. Configure as variáveis de ambiente. Renomeie o arquivo `.env.example` para `.env` e preencha as informações necessárias.
-
-7. Inicie o microserviço:
+## Running the app
 
 ```bash
-npm run dev
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-O servidor estará disponível em http://localhost:3000.
+## Test
 
-## Uso
+```bash
+# unit tests
+$ npm run test
 
-Acesse a API para gerenciar contatos e números de telefone.
+# e2e tests
+$ npm run test:e2e
 
--   Listar todos os contatos: GET /contacts/
--   Obter um contato específico: GET /contacts/:id
--   Criar um novo contato: POST /contacts/
--   Atualizar um contato existente: PUT /contacts/:id
--   Excluir um contato: DELETE /contacts/:id
-
-## Exemplo de Payload para Criação/Atualização de Contato
-
-```script
-{
-    "name": "Nome do Contato",
-    "age": 20,
-    "phones": [
-        {
-            "number": "99 99999-99999"
-        },
-    ]
-}
+# test coverage
+$ npm run test:cov
 ```
 
-## Contribuição
+## Support
 
-Contribuições são bem-vindas! Se encontrar algum problema ou tiver sugestões, por favor, abra uma [issue](https://github.com/JoseEduardoMartins/contacts-backend/issues/new).
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Autor
+## Stay in touch
 
--   José Eduardo Martins
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## Licença
+## License
 
-Este projeto é licenciado sob a Licença MIT - consulte o arquivo LICENSE.md para obter detalhes.
-
-## Contato
-
-Para qualquer dúvida ou problema, entre em contato com `m4rt1ns.jose@gmail.com`.
+Nest is [MIT licensed](LICENSE).
