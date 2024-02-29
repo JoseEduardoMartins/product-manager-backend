@@ -7,8 +7,6 @@ import { useContainer } from 'class-validator';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
   const config = new DocumentBuilder()
     .setTitle('Product manager API')
     .setDescription('Product manager API')
@@ -20,7 +18,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.useGlobalPipes(new ValidationPipe());
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
 
   await app.listen(3000);
 }

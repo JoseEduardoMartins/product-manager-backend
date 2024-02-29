@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { Unique } from 'src/common/decorators/unique-field.decorator';
 
 @Entity()
 export class User {
@@ -41,7 +40,6 @@ export class User {
     type: 'varchar',
     length: 150,
   })
-  @Unique(User, 'email')
   email: string;
 
   @Column({

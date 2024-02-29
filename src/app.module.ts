@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
-import { UniqueConstraint } from 'src/common/decorators/unique-field.decorator';
 import { UsersModule } from './modules/users/user.module';
+import { UniqueConstraint } from './common/decorators/is-unique.validator';
+import { EntityManager } from 'typeorm';
 
 @Module({
   imports: [UsersModule],
   controllers: [],
-  providers: [EntityManager, UniqueConstraint],
+  providers: [UniqueConstraint, EntityManager],
 })
 export class AppModule {}

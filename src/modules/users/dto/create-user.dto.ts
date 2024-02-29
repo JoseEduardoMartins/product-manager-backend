@@ -8,8 +8,10 @@ import {
   IsOptional,
   Length,
 } from 'class-validator';
+import { Unique } from 'src/common/decorators/is-unique.decorator';
 import { formatDate } from 'src/common/helpers/date';
 import { encrypt } from 'src/common/helpers/crypto';
+import { User } from '../user.entity';
 
 export class CreateUserDto {
   @ApiProperty({ required: true })
@@ -35,6 +37,7 @@ export class CreateUserDto {
   @ApiProperty({ required: true })
   @IsEmail()
   @Length(0, 150)
+  @Unique(User, 'email')
   email: string;
 
   @ApiProperty({ required: true })
