@@ -27,11 +27,13 @@ export class CreateUserDto {
   @ApiProperty({ required: true })
   @IsString()
   @Length(0, 50)
+  @Unique(User, 'phone')
   phone: string;
 
   @ApiProperty({ required: true })
   @IsString()
   @Length(0, 50)
+  @Unique(User, 'tax_id')
   tax_id: string;
 
   @ApiProperty({ required: true })

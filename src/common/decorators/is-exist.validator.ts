@@ -6,9 +6,9 @@ import {
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 
-@ValidatorConstraint({ name: 'Unique', async: true })
+@ValidatorConstraint({ name: 'Exist', async: true })
 @Injectable()
-export class UniqueConstraint implements ValidatorConstraintInterface {
+export class ExistConstraint implements ValidatorConstraintInterface {
   constructor(private readonly entityManager: EntityManager) {}
 
   async validate(value: any, args: ValidationArguments) {
@@ -18,10 +18,10 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
       where: { [property]: value },
     });
 
-    return !found;
+    return !!found;
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.value} já está em uso.`;
+    return `{ ${args.property}: ${args.value} } não existe no sistema.`;
   }
 }

@@ -1,11 +1,39 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { Address } from './modules/address/entities/address.entity';
+import { AddressModule } from './modules/address/address.module';
+
+import { Country } from './modules/countries/entities/country.entity';
+import { CountriesModule } from './modules/countries/countries.module';
+
+import { State } from './modules/states/entities/state.entity';
+import { StateModule } from './modules/states/states.module';
+
+import { User } from './modules/users/user.entity';
 import { UsersModule } from './modules/users/user.module';
+
 import { UniqueConstraint } from './common/decorators/is-unique.validator';
-import { EntityManager } from 'typeorm';
+import { ExistConstraint } from './common/decorators/is-exist.validator';
 
 @Module({
-  imports: [UsersModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'product_manager',
+      entities: [Address, Country, State, User],
+      synchronize: true,
+    }),
+    AddressModule,
+    CountriesModule,
+    StateModule,
+    UsersModule,
+  ],
   controllers: [],
-  providers: [UniqueConstraint, EntityManager],
+  providers: [UniqueConstraint, ExistConstraint],
 })
 export class AppModule {}
