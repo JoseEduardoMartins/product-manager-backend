@@ -4,11 +4,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Address } from './modules/address/entities/address.entity';
 import { AddressModule } from './modules/address/address.module';
 
+import { City } from './modules/cities/entities/city.entity';
+import { CitiesModule } from './modules/cities/cities.module';
+
 import { Country } from './modules/countries/entities/country.entity';
 import { CountriesModule } from './modules/countries/countries.module';
 
+import { Sector } from './modules/sectors/entities/sector.entity';
+import { SectorsModule } from './modules/sectors/sectors.module';
+
 import { State } from './modules/states/entities/state.entity';
-import { StateModule } from './modules/states/states.module';
+import { StatesModule } from './modules/states/states.module';
 
 import { User } from './modules/users/user.entity';
 import { UsersModule } from './modules/users/user.module';
@@ -25,12 +31,14 @@ import { ExistConstraint } from './common/decorators/is-exist.validator';
       username: 'root',
       password: 'root',
       database: 'product_manager',
-      entities: [Address, Country, State, User],
+      entities: [Address, City, Country, Sector, State, User],
       synchronize: true,
     }),
     AddressModule,
+    CitiesModule,
     CountriesModule,
-    StateModule,
+    SectorsModule,
+    StatesModule,
     UsersModule,
   ],
   controllers: [],

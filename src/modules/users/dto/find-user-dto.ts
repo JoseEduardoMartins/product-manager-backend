@@ -9,6 +9,7 @@ import {
   IsArray,
   IsOptional,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class FiltersUserDto {
   @ApiProperty({ required: false })
@@ -83,6 +84,7 @@ export class FiltersUserDto {
 
   @ApiProperty({ required: false })
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   address_id?: number;
 }

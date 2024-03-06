@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity({ name: 'state' })
-export class State {
+@Entity({ name: 'city' })
+export class City {
   @PrimaryGeneratedColumn({
     name: 'id',
     type: 'int',
@@ -16,16 +16,8 @@ export class State {
   name: string;
 
   @Column({
-    name: 'short_name',
-    type: 'varchar',
-    length: 10,
-    nullable: true,
-  })
-  short_name?: string;
-
-  @Column({
-    name: 'country_id',
+    name: 'state_id',
     type: 'int',
   })
-  country_id: number;
+  state_id: number;
 }

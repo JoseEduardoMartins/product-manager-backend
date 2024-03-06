@@ -10,4 +10,4 @@ import { StateController } from './states.controller';
   controllers: [StateController],
   exports: [TypeOrmModule],
 })
-export class StateModule {}
+export class StatesModule {}

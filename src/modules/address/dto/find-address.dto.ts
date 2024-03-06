@@ -9,27 +9,52 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-class FiltersStateDto {
+class FiltersAddressDto {
   @ApiProperty({ required: false })
   @IsString()
   @Length(0, 300)
   @IsOptional()
-  name?: string;
+  street?: string;
 
   @ApiProperty({ required: false })
   @IsString()
-  @Length(0, 4)
   @IsOptional()
-  short_name?: string;
+  @Length(0, 300)
+  @IsOptional()
+  complement?: string;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @Transform(({ value }) => Number(value))
+  @IsOptional()
+  number?: number;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @Length(0, 50)
+  @IsOptional()
+  zipcode?: string;
 
   @ApiProperty({ required: false })
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsOptional()
   country_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @Transform(({ value }) => Number(value))
+  @IsOptional()
+  state_id?: number;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @Transform(({ value }) => Number(value))
+  @IsOptional()
+  city_id?: number;
 }
 
-export class ParamsStateDto {
+export class ParamsAddressDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
@@ -38,10 +63,10 @@ export class ParamsStateDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
-  where?: FiltersStateDto;
+  where?: FiltersAddressDto;
 }
 
-export class FindStateDto extends FiltersStateDto {
+export class FindAddressDto extends FiltersAddressDto {
   @ApiProperty({ required: false })
   @IsArray()
   @IsOptional()

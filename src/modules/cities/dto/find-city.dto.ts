@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-class FiltersStateDto {
+class FiltersCityDto {
   @ApiProperty({ required: false })
   @IsString()
   @Length(0, 300)
@@ -17,19 +17,13 @@ class FiltersStateDto {
   name?: string;
 
   @ApiProperty({ required: false })
-  @IsString()
-  @Length(0, 4)
-  @IsOptional()
-  short_name?: string;
-
-  @ApiProperty({ required: false })
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsOptional()
-  country_id?: number;
+  state_id?: number;
 }
 
-export class ParamsStateDto {
+export class ParamsCityDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
@@ -38,10 +32,10 @@ export class ParamsStateDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
-  where?: FiltersStateDto;
+  where?: FiltersCityDto;
 }
 
-export class FindStateDto extends FiltersStateDto {
+export class FindCityDto extends FiltersCityDto {
   @ApiProperty({ required: false })
   @IsArray()
   @IsOptional()

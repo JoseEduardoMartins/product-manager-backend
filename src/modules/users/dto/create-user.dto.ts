@@ -9,9 +9,11 @@ import {
   Length,
 } from 'class-validator';
 import { Unique } from 'src/common/decorators/is-unique.decorator';
+import { Exist } from 'src/common/decorators/is-exist.decorator';
 import { formatDate } from 'src/common/helpers/date';
 import { encrypt } from 'src/common/helpers/crypto';
 import { User } from '../user.entity';
+import { Address } from 'src/modules/address/entities/address.entity';
 
 export class CreateUserDto {
   @ApiProperty({ required: true })
@@ -62,6 +64,7 @@ export class CreateUserDto {
 
   @ApiProperty({ required: false })
   @IsNumber()
+  @Exist(Address, 'id')
   @IsOptional()
   address_id?: number;
 }

@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   Body,
   Patch,
   Param,
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { AddressService } from './address.service';
+import { FindAddressDto } from './dto/find-address.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 
@@ -24,8 +26,9 @@ export class AddressController {
     tags: ['Address'],
   })
   @Get()
-  findAll() {
-    return this.addressService.findAll();
+  find(@Query() query: FindAddressDto) {
+    const { select, ...where } = query;
+    return this.addressService.find({ select, where });
   }
 
   @ApiOperation({

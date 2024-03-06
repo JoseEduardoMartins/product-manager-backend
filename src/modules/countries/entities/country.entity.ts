@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'country' })
 export class Country {
   @PrimaryGeneratedColumn({
     name: 'id',
@@ -30,4 +30,11 @@ export class Country {
     nullable: true,
   })
   phonecode?: string;
+
+  constructor(country?: Partial<Country>) {
+    this.id = country?.id;
+    this.name = country?.name;
+    this.isocode = country?.isocode;
+    this.phonecode = country?.phonecode;
+  }
 }

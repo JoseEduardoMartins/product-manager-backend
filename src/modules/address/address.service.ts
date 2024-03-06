@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Address } from './entities/address.entity';
+import { ParamsAddressDto } from './dto/find-address.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 
@@ -12,8 +13,8 @@ export class AddressService {
     private addressRepository: Repository<Address>,
   ) {}
 
-  findAll(): Promise<Address[]> {
-    return this.addressRepository.find();
+  find(paramsAddressDto: ParamsAddressDto): Promise<Address[]> {
+    return this.addressRepository.find(paramsAddressDto);
   }
 
   findOne(id: number): Promise<Address> {
