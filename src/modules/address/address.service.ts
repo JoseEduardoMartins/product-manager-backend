@@ -13,7 +13,7 @@ export class AddressService {
     private addressRepository: Repository<Address>,
   ) {}
 
-  find(paramsAddressDto: ParamsAddressDto): Promise<Address[]> {
+  find(paramsAddressDto?: ParamsAddressDto): Promise<Address[]> {
     return this.addressRepository.find(paramsAddressDto);
   }
 
@@ -28,10 +28,15 @@ export class AddressService {
   }
 
   async update(id: number, updateAddressDto: UpdateAddressDto): Promise<void> {
-    await this.addressRepository.update({ id }, updateAddressDto);
+    const response = await this.addressRepository.update(
+      { id },
+      updateAddressDto,
+    );
+    if (response?.affected === 0) return null;
   }
 
   async remove(id: number): Promise<void> {
-    await this.addressRepository.delete({ id });
+    const response = await this.addressRepository.delete({ id });
+    if (response?.affected === 0) return null;
   }
 }

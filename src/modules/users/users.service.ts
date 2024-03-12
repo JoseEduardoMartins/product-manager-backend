@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { GenericCreateResponse } from 'src/common/interfaces/generic-response';
+import { User } from './entities/user.entity';
 import { ParamsUserDto } from './dto/find-user-dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,7 +14,7 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  find(paramsUserDto: ParamsUserDto): Promise<User[]> {
+  find(paramsUserDto?: ParamsUserDto): Promise<User[]> {
     return this.userRepository.find(paramsUserDto);
   }
 
@@ -21,7 +22,7 @@ export class UsersService {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<GenericCreateResponse> {
     const data = {
       ...createUserDto,
       created_at: new Date(),
@@ -33,24 +34,24 @@ export class UsersService {
     return { id: response.id };
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<void> {
     const data = {
       ...updateUserDto,
       updated_at: new Date(),
     };
 
-    await this.userRepository.update({ id }, data);
-    return {};
+    const response = await this.userRepository.update({ id }, data);
+    if (response?.affected === 0) return null;
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const data = {
       is_active: false,
       is_deleted: true,
       deleted_at: new Date(),
     };
 
-    await this.userRepository.update({ id }, data);
-    return {};
+    const response = await this.userRepository.update({ id }, data);
+    if (response?.affected === 0) return null;
   }
 }

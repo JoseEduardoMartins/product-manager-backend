@@ -20,4 +20,10 @@ export class City {
     type: 'int',
   })
   state_id: number;
+
+  constructor(city?: Partial<City>) {
+    this.id = city?.id;
+    this.name = city?.name;
+    this.state_id = city?.state_id;
+  }
 }

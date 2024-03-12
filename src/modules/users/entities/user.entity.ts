@@ -113,4 +113,16 @@ export class User {
     nullable: true,
   })
   address_id?: number;
+
+  constructor(user?: Partial<User>) {
+    this.id = user?.id;
+    this.name = user?.name;
+    this.birthdate = user?.birthdate;
+    this.phone = user?.phone;
+    this.tax_id = user?.tax_id;
+    this.email = user?.email;
+    this.password = user?.password;
+    this.security_code = user?.security_code;
+    this.address_id = user?.address_id;
+  }
 }

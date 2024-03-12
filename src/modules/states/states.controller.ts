@@ -2,14 +2,18 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
+  Delete,
+  Param,
   Query,
   Body,
-  Patch,
-  Param,
-  Delete,
+  HttpCode,
+  HttpStatus,
+  HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { getParams } from '../../common/helpers/params';
 import { StateService } from './states.service';
 import { FindStateDto } from './dto/find-states.dto';
 import { CreateStateDto } from './dto/create-states.dto';
@@ -26,9 +30,9 @@ export class StateController {
     tags: ['State'],
   })
   @Get()
-  find(@Query() query: FindStateDto) {
-    const { select, ...where } = query;
-    return this.stateService.find({ select, where });
+  find(@Query() query?: FindStateDto) {
+    const params = getParams(query);
+    return this.stateService.find(params);
   }
 
   @ApiOperation({
@@ -45,6 +49,7 @@ export class StateController {
     tags: ['State'],
   })
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createStateDto: CreateStateDto) {
     return this.stateService.create(createStateDto);
   }
@@ -54,11 +59,15 @@ export class StateController {
     tags: ['State'],
   })
   @Patch(':id')
-  update(
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateStateDto: UpdateStateDto,
   ) {
-    return this.stateService.update(id, updateStateDto);
+    const response = await this.stateService.update(id, updateStateDto);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
   @ApiOperation({
@@ -66,7 +75,11 @@ export class StateController {
     tags: ['State'],
   })
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.stateService.remove(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const response = await this.stateService.remove(id);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }

@@ -13,7 +13,7 @@ export class CitiesService {
     private cityRepository: Repository<City>,
   ) {}
 
-  find(paramsStateDto: ParamsCityDto): Promise<City[]> {
+  find(paramsStateDto?: ParamsCityDto): Promise<City[]> {
     return this.cityRepository.find(paramsStateDto);
   }
 
@@ -24,15 +24,16 @@ export class CitiesService {
   async create(createCityDto: CreateCityDto) {
     const state = this.cityRepository.create(createCityDto);
     const response = await this.cityRepository.save(state);
-
     return { id: response.id };
   }
 
   async update(id: number, updateCityDto: UpdateCityDto): Promise<void> {
-    await this.cityRepository.update({ id }, updateCityDto);
+    const response = await this.cityRepository.update({ id }, updateCityDto);
+    if (response?.affected === 0) return null;
   }
 
   async remove(id: number): Promise<void> {
-    await this.cityRepository.delete({ id });
+    const response = await this.cityRepository.delete({ id });
+    if (response?.affected === 0) return null;
   }
 }

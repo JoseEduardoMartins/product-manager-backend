@@ -2,14 +2,18 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
+  Delete,
+  Param,
   Query,
   Body,
-  Patch,
-  Param,
-  Delete,
+  HttpCode,
+  HttpStatus,
+  HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { getParams } from '../../common/helpers/params';
 import { AddressService } from './address.service';
 import { FindAddressDto } from './dto/find-address.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
@@ -26,9 +30,9 @@ export class AddressController {
     tags: ['Address'],
   })
   @Get()
-  find(@Query() query: FindAddressDto) {
-    const { select, ...where } = query;
-    return this.addressService.find({ select, where });
+  find(@Query() query?: FindAddressDto) {
+    const params = getParams(query);
+    return this.addressService.find(params);
   }
 
   @ApiOperation({
@@ -45,6 +49,7 @@ export class AddressController {
     tags: ['Address'],
   })
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createAddressDto: CreateAddressDto) {
     return this.addressService.create(createAddressDto);
   }
@@ -54,11 +59,15 @@ export class AddressController {
     tags: ['Address'],
   })
   @Patch(':id')
-  update(
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateAddressDto: UpdateAddressDto,
   ) {
-    return this.addressService.update(id, updateAddressDto);
+    const response = await this.addressService.update(id, updateAddressDto);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
   @ApiOperation({
@@ -66,7 +75,11 @@ export class AddressController {
     tags: ['Address'],
   })
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.addressService.remove(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const response = await this.addressService.remove(id);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }

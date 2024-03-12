@@ -5,11 +5,11 @@ import {
   IsDate,
   IsBoolean,
   IsEmail,
-  IsObject,
   IsArray,
   IsOptional,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { GenericParamsDto } from '../../../common/dtos/generic-params.dto';
 
 export class FiltersUserDto {
   @ApiProperty({ required: false })
@@ -89,17 +89,7 @@ export class FiltersUserDto {
   address_id?: number;
 }
 
-export class ParamsUserDto {
-  @ApiProperty({ required: false })
-  @IsObject()
-  @IsOptional()
-  select?: object;
-
-  @ApiProperty({ required: false })
-  @IsObject()
-  @IsOptional()
-  filters?: FiltersUserDto;
-}
+export class ParamsUserDto extends GenericParamsDto<FiltersUserDto> {}
 
 export class FindUserDto extends FiltersUserDto {
   @ApiProperty({ required: false })

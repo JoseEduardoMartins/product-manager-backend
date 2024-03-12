@@ -54,4 +54,15 @@ export class Address {
     type: 'int',
   })
   city_id: number;
+
+  constructor(address?: Partial<Address>) {
+    this.id = address?.id;
+    this.street = address?.street;
+    this.complement = address?.complement;
+    this.number = address?.number;
+    this.zipcode = address?.zipcode;
+    this.country_id = address?.country_id;
+    this.state_id = address?.state_id;
+    this.city_id = address?.city_id;
+  }
 }

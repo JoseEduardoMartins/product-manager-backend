@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Address } from './modules/address/entities/address.entity';
 import { AddressModule } from './modules/address/address.module';
 
+import { AuthModule } from './modules/auth/auth.module';
+
 import { City } from './modules/cities/entities/city.entity';
 import { CitiesModule } from './modules/cities/cities.module';
 
@@ -16,8 +18,8 @@ import { SectorsModule } from './modules/sectors/sectors.module';
 import { State } from './modules/states/entities/state.entity';
 import { StatesModule } from './modules/states/states.module';
 
-import { User } from './modules/users/user.entity';
-import { UsersModule } from './modules/users/user.module';
+import { User } from './modules/users/entities/user.entity';
+import { UsersModule } from './modules/users/users.module';
 
 import { UniqueConstraint } from './common/decorators/is-unique.validator';
 import { ExistConstraint } from './common/decorators/is-exist.validator';
@@ -35,6 +37,7 @@ import { ExistConstraint } from './common/decorators/is-exist.validator';
       synchronize: true,
     }),
     AddressModule,
+    AuthModule,
     CitiesModule,
     CountriesModule,
     SectorsModule,

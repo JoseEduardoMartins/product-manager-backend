@@ -2,14 +2,18 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
+  Delete,
+  Param,
   Query,
   Body,
-  Patch,
-  Param,
-  Delete,
+  HttpCode,
+  HttpStatus,
+  HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { getParams } from '../../common/helpers/params';
 import { CountriesService } from './countries.service';
 import { FindCountryDto } from './dto/find-country.dto';
 import { CreateCountryDto } from './dto/create-country.dto';
@@ -26,9 +30,9 @@ export class CountriesController {
     tags: ['Country'],
   })
   @Get()
-  find(@Query() query: FindCountryDto) {
-    const { select, ...where } = query;
-    return this.countriesService.find({ select, where });
+  find(@Query() query?: FindCountryDto) {
+    const params = getParams(query);
+    return this.countriesService.find(params);
   }
 
   @ApiOperation({
@@ -45,6 +49,7 @@ export class CountriesController {
     tags: ['Country'],
   })
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createCountryDto: CreateCountryDto) {
     return this.countriesService.create(createCountryDto);
   }
@@ -54,11 +59,15 @@ export class CountriesController {
     tags: ['Country'],
   })
   @Patch(':id')
-  update(
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCountryDto: UpdateCountryDto,
   ) {
-    return this.countriesService.update(id, updateCountryDto);
+    const response = await this.countriesService.update(id, updateCountryDto);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
   @ApiOperation({
@@ -66,7 +75,11 @@ export class CountriesController {
     tags: ['Country'],
   })
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.countriesService.remove(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const response = await this.countriesService.remove(id);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }

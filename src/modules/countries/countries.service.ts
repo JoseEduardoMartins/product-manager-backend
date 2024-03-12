@@ -13,7 +13,7 @@ export class CountriesService {
     private countryRepository: Repository<Country>,
   ) {}
 
-  find(paramsCountryDto: ParamsCountryDto): Promise<Country[]> {
+  find(paramsCountryDto?: ParamsCountryDto): Promise<Country[]> {
     return this.countryRepository.find(paramsCountryDto);
   }
 
@@ -28,10 +28,15 @@ export class CountriesService {
   }
 
   async update(id: number, updateCountryDto: UpdateCountryDto): Promise<void> {
-    await this.countryRepository.update({ id }, updateCountryDto);
+    const response = await this.countryRepository.update(
+      { id },
+      updateCountryDto,
+    );
+    if (response?.affected === 0) return null;
   }
 
   async remove(id: number): Promise<void> {
-    await this.countryRepository.delete({ id });
+    const response = await this.countryRepository.delete({ id });
+    if (response?.affected === 0) return null;
   }
 }

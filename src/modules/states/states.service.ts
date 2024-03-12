@@ -13,7 +13,7 @@ export class StateService {
     private stateRepository: Repository<State>,
   ) {}
 
-  find(paramsStateDto: ParamsStateDto): Promise<State[]> {
+  find(paramsStateDto?: ParamsStateDto): Promise<State[]> {
     return this.stateRepository.find(paramsStateDto);
   }
 
@@ -24,15 +24,16 @@ export class StateService {
   async create(createStateDto: CreateStateDto) {
     const state = this.stateRepository.create(createStateDto);
     const response = await this.stateRepository.save(state);
-
     return { id: response.id };
   }
 
   async update(id: number, updateStateDto: UpdateStateDto): Promise<void> {
-    await this.stateRepository.update({ id }, updateStateDto);
+    const response = await this.stateRepository.update({ id }, updateStateDto);
+    if (response?.affected === 0) return null;
   }
 
   async remove(id: number): Promise<void> {
-    await this.stateRepository.delete({ id });
+    const response = await this.stateRepository.delete({ id });
+    if (response?.affected === 0) return null;
   }
 }

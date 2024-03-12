@@ -8,12 +8,12 @@ import {
   IsOptional,
   Length,
 } from 'class-validator';
-import { Unique } from 'src/common/decorators/is-unique.decorator';
-import { Exist } from 'src/common/decorators/is-exist.decorator';
-import { formatDate } from 'src/common/helpers/date';
-import { encrypt } from 'src/common/helpers/crypto';
-import { User } from '../user.entity';
-import { Address } from 'src/modules/address/entities/address.entity';
+import { Unique } from '../../../common/decorators/is-unique.decorator';
+import { Exist } from '../../../common/decorators/is-exist.decorator';
+import { formatDate } from '../../../common/helpers/date';
+import { encrypt } from '../../../common/helpers/crypto';
+import { User } from '../entities/user.entity';
+import { Address } from '../../../modules/address/entities/address.entity';
 
 export class CreateUserDto {
   @ApiProperty({ required: true })

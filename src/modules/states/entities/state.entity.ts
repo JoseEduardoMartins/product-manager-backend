@@ -28,4 +28,11 @@ export class State {
     type: 'int',
   })
   country_id: number;
+
+  constructor(state?: Partial<State>) {
+    this.id = state?.id;
+    this.name = state?.name;
+    this.short_name = state?.short_name;
+    this.country_id = state?.country_id;
+  }
 }

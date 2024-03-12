@@ -2,15 +2,19 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
+  Delete,
+  Param,
   Query,
   Body,
-  Patch,
-  Param,
-  Delete,
+  HttpCode,
+  HttpStatus,
+  HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { UsersService } from './user.service';
+import { getParams } from '../../common/helpers/params';
+import { UsersService } from './users.service';
 import { FindUserDto } from './dto/find-user-dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -26,9 +30,9 @@ export class UsersController {
     tags: ['User'],
   })
   @Get()
-  findAll(@Query() query: FindUserDto) {
-    const { select, ...filters } = query;
-    return this.usersService.find({ select, filters });
+  find(@Query() query?: FindUserDto) {
+    const params = getParams(query);
+    return this.usersService.find(params);
   }
 
   @ApiOperation({
@@ -45,6 +49,7 @@ export class UsersController {
     tags: ['User'],
   })
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -54,11 +59,15 @@ export class UsersController {
     tags: ['User'],
   })
   @Patch(':id')
-  update(
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.usersService.update(+id, updateUserDto);
+    const response = await this.usersService.update(id, updateUserDto);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 
   @ApiOperation({
@@ -66,7 +75,11 @@ export class UsersController {
     tags: ['User'],
   })
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const response = await this.usersService.remove(id);
+
+    if (response === null)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   }
 }

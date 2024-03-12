@@ -27,15 +27,19 @@ export class SectorsService {
   ): Promise<GenericCreateResponse> {
     const sector = this.sectorRepository.create(createSectorDto);
     const response = await this.sectorRepository.save(sector);
-
     return { id: response.id };
   }
 
   async update(id: number, updateSectorDto: UpdateSectorDto): Promise<void> {
-    await this.sectorRepository.update({ id }, updateSectorDto);
+    const response = await this.sectorRepository.update(
+      { id },
+      updateSectorDto,
+    );
+    if (response?.affected === 0) return null;
   }
 
   async remove(id: number): Promise<void> {
-    await this.sectorRepository.delete({ id });
+    const response = await this.sectorRepository.delete({ id });
+    if (response?.affected === 0) return null;
   }
 }

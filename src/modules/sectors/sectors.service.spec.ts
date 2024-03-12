@@ -5,14 +5,27 @@ import { SectorsService } from './sectors.service';
 import { Sector } from './entities/sector.entity';
 import { CreateSectorDto } from './dto/create-sector.dto';
 import { UpdateSectorDto } from './dto/update-sector.dto';
+import {
+  UpdateResponse,
+  DeleteResponse,
+} from '../../common/interfaces/repository-response';
 
-const sectorEtityList: Sector[] = [
+const findResponse = [
   new Sector({ id: 1, name: 'test-1' }),
   new Sector({ id: 2, name: 'test-2' }),
   new Sector({ id: 3, name: 'test-3' }),
 ];
+const findOneResponse = new Sector({ id: 1, name: 'test-1' });
+const createResponse = new Sector({ id: 1, name: 'test-1' });
+const saveResponse = new Sector({ id: 1, name: 'test-1' });
+const updateResponse = new UpdateResponse({
+  generatedMaps: [],
+  raw: [],
+  affected: 1,
+});
+const deleteResponse = new DeleteResponse({ raw: [], affected: 1 });
 
-const createResponse = { id: 1 };
+const createdResponse = { id: 1 };
 
 describe('SectorsService', () => {
   let sectorService: SectorsService;
@@ -25,12 +38,12 @@ describe('SectorsService', () => {
         {
           provide: getRepositoryToken(Sector),
           useValue: {
-            find: jest.fn().mockResolvedValue(sectorEtityList),
-            findOne: jest.fn().mockResolvedValue(sectorEtityList[0]),
-            create: jest.fn().mockResolvedValue(sectorEtityList[0]),
-            save: jest.fn().mockResolvedValue(sectorEtityList[0]),
-            update: jest.fn().mockResolvedValue(undefined),
-            delete: jest.fn().mockResolvedValue(undefined),
+            find: jest.fn().mockResolvedValue(findResponse),
+            findOne: jest.fn().mockResolvedValue(findOneResponse),
+            create: jest.fn().mockResolvedValue(createResponse),
+            save: jest.fn().mockResolvedValue(saveResponse),
+            update: jest.fn().mockResolvedValue(updateResponse),
+            delete: jest.fn().mockResolvedValue(deleteResponse),
           },
         },
       ],
@@ -48,10 +61,10 @@ describe('SectorsService', () => {
   });
 
   describe('find', () => {
-    it('should return a sector list entity successfully', async () => {
+    it('should return a sector entity list successfully', async () => {
       const result = await sectorService.find();
 
-      expect(result).toEqual(sectorEtityList);
+      expect(result).toEqual(findResponse);
       expect(typeof result).toEqual('object');
       expect(sectorRepository.find).toHaveBeenCalledTimes(1);
     });
@@ -67,7 +80,7 @@ describe('SectorsService', () => {
       const id = 1;
       const result = await sectorService.findOne(id);
 
-      expect(result).toEqual(sectorEtityList[0]);
+      expect(result).toEqual(findOneResponse);
       expect(typeof result).toEqual('object');
       expect(sectorRepository.findOne).toHaveBeenCalledTimes(1);
       expect(sectorRepository.findOne).toHaveBeenCalledWith({ where: { id } });
@@ -87,9 +100,9 @@ describe('SectorsService', () => {
 
       const result = await sectorService.create(body);
 
-      expect(result).toEqual(createResponse);
-      expect(sectorRepository.save).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(createdResponse);
       expect(sectorRepository.create).toHaveBeenCalledTimes(1);
+      expect(sectorRepository.save).toHaveBeenCalledTimes(1);
       expect(sectorRepository.create).toHaveBeenCalledWith(body);
     });
 
