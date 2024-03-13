@@ -9,6 +9,7 @@ import {
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { generateToken } from '../../common/helpers/authentication';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -40,13 +41,13 @@ export class AuthController {
     if (!user.is_verified)
       throw new UnauthorizedException('User is not verified, check your email');
 
-    if (!user.is_deleted)
-      throw new UnauthorizedException('User is not active, check your email');
+    if (user.is_deleted)
+      throw new UnauthorizedException('User is deleted, check your email');
 
     delete user.created_at;
     delete user.updated_at;
     delete user.deleted_at;
 
-    return user;
+    return { user, token: generateToken(user) };
   }
 }
