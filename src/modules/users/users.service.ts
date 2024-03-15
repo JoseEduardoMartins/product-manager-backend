@@ -25,6 +25,9 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<GenericCreateResponse> {
     const data = {
       ...createUserDto,
+      is_active: true,
+      is_verified: false,
+      is_deleted: false,
       created_at: new Date(),
       updated_at: new Date(),
     };

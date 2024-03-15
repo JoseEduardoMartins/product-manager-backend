@@ -1,5 +1,7 @@
 import {
   Controller,
+  Req,
+  Res,
   Post,
   Body,
   HttpCode,
@@ -7,15 +9,20 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { Response, Request } from 'express';
 import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { generateToken } from '../../common/helpers/authentication';
+import { domainFormatter } from '../../common/helpers/domain-formater';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   @ApiOperation({
     description: 'Autenticação de usuario.',
@@ -23,7 +30,11 @@ export class AuthController {
   })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async signIn(@Body() loginAuthDto: LoginAuthDto): Promise<any> {
+  async signIn(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+    @Body() loginAuthDto: LoginAuthDto,
+  ): Promise<any> {
     const { email, password } = loginAuthDto;
 
     const [user] = await this.usersService.find({
@@ -48,6 +59,21 @@ export class AuthController {
     delete user.updated_at;
     delete user.deleted_at;
 
-    return { user, token: generateToken(user) };
+    const token = await this.jwtService.signAsync({
+      sub: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    });
+
+    const domain = domainFormatter(request.get('origin'));
+
+    response.cookie('token', token, {
+      httpOnly: true,
+      secure: domain !== 'localhost',
+      domain,
+    });
+
+    return { user, token };
   }
 }

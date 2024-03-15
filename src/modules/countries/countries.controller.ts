@@ -12,7 +12,7 @@ import {
   HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { getParams } from '../../common/helpers/params';
 import { CountriesService } from './countries.service';
 import { FindCountryDto } from './dto/find-country.dto';
@@ -20,7 +20,6 @@ import { CreateCountryDto } from './dto/create-country.dto';
 import { UpdateCountryDto } from './dto/update-country.dto';
 
 @ApiTags('Country')
-@ApiBearerAuth()
 @Controller('countries')
 export class CountriesController {
   constructor(private readonly countriesService: CountriesService) {}

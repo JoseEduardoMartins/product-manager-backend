@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { GenericCreateResponse } from 'src/common/interfaces/generic-response';
 import { Country } from './entities/country.entity';
 import { ParamsCountryDto } from './dto/find-country.dto';
 import { CreateCountryDto } from './dto/create-country.dto';
@@ -21,7 +22,9 @@ export class CountriesService {
     return this.countryRepository.findOne({ where: { id } });
   }
 
-  async create(createCountryDto: CreateCountryDto) {
+  async create(
+    createCountryDto: CreateCountryDto,
+  ): Promise<GenericCreateResponse> {
     const user = this.countryRepository.create(createCountryDto);
     const response = await this.countryRepository.save(user);
     return { id: response.id };

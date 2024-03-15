@@ -12,7 +12,7 @@ import {
   HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiSecurity, ApiOperation } from '@nestjs/swagger';
 import { getParams } from '../../common/helpers/params';
 import { AddressService } from './address.service';
 import { FindAddressDto } from './dto/find-address.dto';
@@ -20,7 +20,7 @@ import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 
 @ApiTags('Address')
-@ApiBearerAuth()
+@ApiSecurity('token')
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}

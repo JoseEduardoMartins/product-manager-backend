@@ -30,36 +30,30 @@ const findResponse = [
     phonecode: '+53',
   }),
 ];
-
 const findOneResponse = new Country({
   id: 1,
   name: 'teste-1',
   isocode: 'TT',
   phonecode: '+55',
 });
-
 const createResponse = new Country({
   id: 1,
   name: 'teste-1',
   isocode: 'TT',
   phonecode: '+55',
 });
-
 const createdResponse = { id: 1 };
-
 const saveResponse = new Country({
   id: 1,
   name: 'teste-1',
   isocode: 'TT',
   phonecode: '+55',
 });
-
 const updateResponse = new UpdateResponse({
   generatedMaps: [],
   raw: [],
   affected: 1,
 });
-
 const deleteResponse = new DeleteResponse({ raw: [], affected: 1 });
 
 describe('CountriesService', () => {

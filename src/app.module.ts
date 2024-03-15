@@ -1,24 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { Address } from './modules/address/entities/address.entity';
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.config';
+
 import { AddressModule } from './modules/address/address.module';
-
 import { AuthModule } from './modules/auth/auth.module';
-
-import { City } from './modules/cities/entities/city.entity';
 import { CitiesModule } from './modules/cities/cities.module';
-
-import { Country } from './modules/countries/entities/country.entity';
 import { CountriesModule } from './modules/countries/countries.module';
-
-import { Sector } from './modules/sectors/entities/sector.entity';
+import { FeaturesModule } from './modules/features/features.module';
+import { ProfilesModule } from './modules/profiles/profiles.module';
 import { SectorsModule } from './modules/sectors/sectors.module';
-
-import { State } from './modules/states/entities/state.entity';
 import { StatesModule } from './modules/states/states.module';
-
-import { User } from './modules/users/entities/user.entity';
 import { UsersModule } from './modules/users/users.module';
 
 import { UniqueConstraint } from './common/decorators/is-unique.validator';
@@ -26,20 +20,32 @@ import { ExistConstraint } from './common/decorators/is-exist.validator';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'product_manager',
-      entities: [Address, City, Country, Sector, State, User],
-      synchronize: true,
+    ConfigModule.forRoot({
+      envFilePath: ['.env', '.env.production', '.env.development'],
+      isGlobal: true,
+      load: [appConfig, databaseConfig],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) =>
+        ({
+          type: configService.get<string>('database.type'),
+          host: configService.get<string>('database.host'),
+          port: configService.get<number>('database.port'),
+          database: configService.get<string>('database.name'),
+          username: configService.get<string>('database.username'),
+          password: configService.get<string>('database.userpassword'),
+          entities: ['./**/*.entity{ .ts,.js}'],
+          synchronize: true,
+        }) as TypeOrmModuleOptions,
+      inject: [ConfigService],
     }),
     AddressModule,
     AuthModule,
     CitiesModule,
     CountriesModule,
+    FeaturesModule,
+    ProfilesModule,
     SectorsModule,
     StatesModule,
     UsersModule,

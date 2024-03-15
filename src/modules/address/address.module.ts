@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
 import { Address } from './entities/address.entity';
 import { AddressService } from './address.service';
 import { AddressController } from './address.controller';
@@ -10,4 +11,8 @@ import { AddressController } from './address.controller';
   controllers: [AddressController],
   exports: [TypeOrmModule],
 })
-export class AddressModule {}
+export class AddressModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AuthMiddleware).forRoutes(AddressController);
+  }
+}

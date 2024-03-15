@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
@@ -29,6 +30,12 @@ describe('AuthController', () => {
           provide: UsersService,
           useValue: {
             find: jest.fn().mockResolvedValue(findResponse),
+          },
+        },
+        {
+          provide: JwtService,
+          useValue: {
+            signAsync: jest.fn().mockResolvedValue(findResponse),
           },
         },
       ],

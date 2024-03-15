@@ -12,7 +12,7 @@ import {
   HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { getParams } from '../../common/helpers/params';
 import { SectorsService } from './sectors.service';
 import { FindSectorDto } from './dto/find-sector.dto';
@@ -20,7 +20,6 @@ import { CreateSectorDto } from './dto/create-sector.dto';
 import { UpdateSectorDto } from './dto/update-sector.dto';
 
 @ApiTags('Sector')
-@ApiBearerAuth()
 @Controller('sectors')
 export class SectorsController {
   constructor(private readonly sectorsService: SectorsService) {}

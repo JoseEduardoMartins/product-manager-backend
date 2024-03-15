@@ -12,7 +12,7 @@ import {
   HttpException,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { getParams } from '../../common/helpers/params';
 import { StateService } from './states.service';
 import { FindStateDto } from './dto/find-states.dto';
@@ -20,7 +20,6 @@ import { CreateStateDto } from './dto/create-states.dto';
 import { UpdateStateDto } from './dto/update-states.dto';
 
 @ApiTags('State')
-@ApiBearerAuth()
 @Controller('state')
 export class StateController {
   constructor(private readonly stateService: StateService) {}

@@ -4,10 +4,6 @@ import { CitiesService } from './cities.service';
 import { City } from './entities/city.entity';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
-import {
-  UpdateResponse,
-  DeleteResponse,
-} from '../../common/interfaces/repository-response';
 
 const findResponse = [
   new City({
@@ -26,22 +22,14 @@ const findResponse = [
     state_id: 3,
   }),
 ];
-
 const findOneResponse = new City({
   id: 1,
   name: 'teste-1',
   state_id: 1,
 });
-
 const createdResponse = { id: 1 };
-
-const updateResponse = new UpdateResponse({
-  generatedMaps: [],
-  raw: [],
-  affected: 1,
-});
-
-const deleteResponse = new DeleteResponse({ raw: [], affected: 1 });
+const updateResponse = undefined;
+const deleteResponse = undefined;
 
 describe('CitiesController', () => {
   let citiesController: CitiesController;
