@@ -1,9 +1,9 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
-import { Address } from './entities/address.entity';
-import { AddressService } from './address.service';
 import { AddressController } from './address.controller';
+import { AddressService } from './address.service';
+import { Address } from './entities/address.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Address])],

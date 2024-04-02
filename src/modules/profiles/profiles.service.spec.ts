@@ -108,6 +108,9 @@ describe('ProfilesService', () => {
       expect(profileRepository.findOne).toHaveBeenCalledTimes(1);
       expect(profileRepository.findOne).toHaveBeenCalledWith({
         where: { id },
+        relations: {
+          features: true,
+        },
       });
     });
 

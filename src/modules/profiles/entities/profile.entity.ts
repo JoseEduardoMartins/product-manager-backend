@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Feature } from '../../features/entities/feature.entity';
 
 @Entity({ name: 'profile' })
 export class Profile {
@@ -21,6 +28,10 @@ export class Profile {
     default: true,
   })
   is_active: boolean;
+
+  @ManyToMany(() => Feature)
+  @JoinTable()
+  features: Feature[];
 
   constructor(profile?: Partial<Profile>) {
     this.id = profile?.id;

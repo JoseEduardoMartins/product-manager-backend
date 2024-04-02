@@ -14,11 +14,21 @@ export class ProfilesService {
   ) {}
 
   find(paramsProfileDto?: ParamsProfileDto): Promise<Profile[]> {
-    return this.profileRepository.find(paramsProfileDto);
+    return this.profileRepository.find({
+      ...paramsProfileDto,
+      relations: {
+        features: true,
+      },
+    });
   }
 
   findOne(id: number): Promise<Profile> {
-    return this.profileRepository.findOne({ where: { id } });
+    return this.profileRepository.findOne({
+      where: { id },
+      relations: {
+        features: true,
+      },
+    });
   }
 
   async create(createProfileDto: CreateProfileDto) {

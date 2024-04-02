@@ -10,9 +10,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { Response, Request } from 'express';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { AddressService } from '../address/address.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { RegisterAuthDto } from './dto/register-auth.dto';
 import { domainFormatter } from '../../common/helpers/domain-formater';
 
 @ApiTags('Auth')
@@ -20,12 +22,13 @@ import { domainFormatter } from '../../common/helpers/domain-formater';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private usersService: UsersService,
     private jwtService: JwtService,
+    private usersService: UsersService,
+    private addressService: AddressService,
   ) {}
 
   @ApiOperation({
-    description: 'Autenticação de usuario.',
+    description: 'Autenticar de usuario.',
     tags: ['Auth'],
   })
   @Post('login')
@@ -75,5 +78,24 @@ export class AuthController {
     });
 
     return { user, token };
+  }
+
+  @ApiOperation({
+    description: 'Registrar usuario.',
+    tags: ['Auth'],
+  })
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  async register(@Body() registerAuthDto: RegisterAuthDto) {
+    const { address, ...user } = registerAuthDto;
+
+    const responseAddress = await this.addressService.create(address);
+
+    const response = await this.usersService.create({
+      ...user,
+      address_id: responseAddress.id,
+    });
+
+    return response;
   }
 }

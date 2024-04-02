@@ -15,8 +15,8 @@ import { SectorsModule } from './modules/sectors/sectors.module';
 import { StatesModule } from './modules/states/states.module';
 import { UsersModule } from './modules/users/users.module';
 
-import { UniqueConstraint } from './common/decorators/is-unique.validator';
 import { ExistConstraint } from './common/decorators/is-exist.validator';
+import { UniqueConstraint } from './common/decorators/is-unique.validator';
 
 @Module({
   imports: [
