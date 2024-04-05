@@ -56,12 +56,6 @@ export class RegisterAuthDto {
   photo?: string;
 
   @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
-  @Length(6, 6)
-  security_code?: string;
-
-  @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
   address: CreateAddressDto;

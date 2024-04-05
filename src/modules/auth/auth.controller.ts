@@ -11,6 +11,7 @@ import {
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { MailerService } from '@nestjs-modules/mailer';
 import { UsersService } from '../users/users.service';
 import { AddressService } from '../address/address.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -23,6 +24,7 @@ import { domainFormatter } from '../../common/helpers/domain-formater';
 export class AuthController {
   constructor(
     private jwtService: JwtService,
+    private mailerService: MailerService,
     private usersService: UsersService,
     private addressService: AddressService,
   ) {}
@@ -94,6 +96,13 @@ export class AuthController {
     const response = await this.usersService.create({
       ...user,
       address_id: responseAddress.id,
+    });
+
+    this.mailerService.sendMail({
+      to: user.email,
+      subject: 'Testing Nest MailerModule ✔',
+      text: 'welcome',
+      html: '<b>welcome</b>',
     });
 
     return response;

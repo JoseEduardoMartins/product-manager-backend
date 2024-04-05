@@ -2,8 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+import { MailerModule } from '@nestjs-modules/mailer';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
+import mailConfig from './config/mail.config';
 
 import { AddressModule } from './modules/address/address.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -23,7 +27,7 @@ import { UniqueConstraint } from './common/decorators/is-unique.validator';
     ConfigModule.forRoot({
       envFilePath: ['.env', '.env.production', '.env.development'],
       isGlobal: true,
-      load: [appConfig, databaseConfig],
+      load: [appConfig, databaseConfig, mailConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -38,6 +42,32 @@ import { UniqueConstraint } from './common/decorators/is-unique.validator';
           entities: ['./**/*.entity{ .ts,.js}'],
           synchronize: true,
         }) as TypeOrmModuleOptions,
+      inject: [ConfigService],
+    }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('mail.host'),
+          port: configService.get<number>('mail.port'),
+          ignoreTLS: true,
+          secure: false,
+          auth: {
+            user: configService.get<string>('mail.user'),
+            pass: configService.get<string>('mail.password'),
+          },
+        },
+        defaults: {
+          from: 'eduardo.martins.surf@gmail.com',
+        },
+        template: {
+          dir: process.cwd() + '/template/',
+          adapter: new PugAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
       inject: [ConfigService],
     }),
     AddressModule,
