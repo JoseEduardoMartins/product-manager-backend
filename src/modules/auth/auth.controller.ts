@@ -1,22 +1,24 @@
 import {
-  Controller,
-  Req,
-  Res,
-  Post,
   Body,
+  Controller,
   HttpCode,
   HttpStatus,
+  Post,
+  Req,
+  Res,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { Response, Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { MailerService } from '@nestjs-modules/mailer';
-import { UsersService } from '../users/users.service';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request, Response } from 'express';
+import { generateRandomText } from 'src/common/helpers/string';
+import { domainFormatter } from '../../common/helpers/domain-formater';
 import { AddressService } from '../address/address.service';
+import { MailService } from '../mail/mail.service';
+import { UsersService } from '../users/users.service';
+import { ConfirmAuthDto } from './dto/confirm-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
-import { domainFormatter } from '../../common/helpers/domain-formater';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -24,7 +26,7 @@ import { domainFormatter } from '../../common/helpers/domain-formater';
 export class AuthController {
   constructor(
     private jwtService: JwtService,
-    private mailerService: MailerService,
+    private mailService: MailService,
     private usersService: UsersService,
     private addressService: AddressService,
   ) {}
@@ -92,19 +94,46 @@ export class AuthController {
     const { address, ...user } = registerAuthDto;
 
     const responseAddress = await this.addressService.create(address);
+    const security_code = generateRandomText(6, '123456789');
 
     const response = await this.usersService.create({
       ...user,
+      security_code,
       address_id: responseAddress.id,
     });
 
-    this.mailerService.sendMail({
+    this.mailService.sendMail({
       to: user.email,
-      subject: 'Testing Nest MailerModule ✔',
-      text: 'welcome',
-      html: '<b>welcome</b>',
+      subject: 'Welcome to Nice App! Confirm your Email',
+      template: './welcome',
+      context: {
+        name: user.name,
+        security_code,
+      },
     });
 
     return response;
+  }
+
+  @ApiOperation({
+    description: 'Confirmar email de usuario.',
+    tags: ['Auth'],
+  })
+  @Post('confirm')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async confirm(@Body() confirmAuthDto: ConfirmAuthDto) {
+    const { email, security_code } = confirmAuthDto;
+
+    const [user] = await this.usersService.find({
+      select: ['id', 'security_code'],
+      where: { email },
+    });
+
+    if (!user) throw new UnauthorizedException('Invalid email');
+
+    if (user?.security_code !== security_code)
+      throw new UnauthorizedException('Invalid code');
+
+    await this.usersService.update(user.id, { is_verified: true });
   }
 }

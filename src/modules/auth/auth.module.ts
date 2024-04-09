@@ -6,6 +6,7 @@ import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { Address } from '../address/entities/address.entity';
 import { AddressService } from '../address/address.service';
+import { MailService } from '../mail/mail.service';
 import { jwtConstants } from './constants';
 
 @Module({
@@ -19,7 +20,7 @@ import { jwtConstants } from './constants';
     }),
   ],
   controllers: [AuthController],
-  providers: [UsersService, AddressService],
+  providers: [UsersService, AddressService, MailService],
   exports: [TypeOrmModule],
 })
 export class AuthModule {}

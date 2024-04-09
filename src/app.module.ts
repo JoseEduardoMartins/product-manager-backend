@@ -2,9 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { MailerModule } from '@nestjs-modules/mailer';
-import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import mailConfig from './config/mail.config';
@@ -14,6 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CitiesModule } from './modules/cities/cities.module';
 import { CountriesModule } from './modules/countries/countries.module';
 import { FeaturesModule } from './modules/features/features.module';
+import { MailModule } from './modules/mail/mail.module';
 import { ProfilesModule } from './modules/profiles/profiles.module';
 import { SectorsModule } from './modules/sectors/sectors.module';
 import { StatesModule } from './modules/states/states.module';
@@ -44,37 +42,12 @@ import { UniqueConstraint } from './common/decorators/is-unique.validator';
         }) as TypeOrmModuleOptions,
       inject: [ConfigService],
     }),
-    MailerModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        transport: {
-          host: configService.get<string>('mail.host'),
-          port: configService.get<number>('mail.port'),
-          ignoreTLS: true,
-          secure: false,
-          auth: {
-            user: configService.get<string>('mail.user'),
-            pass: configService.get<string>('mail.password'),
-          },
-        },
-        defaults: {
-          from: 'eduardo.martins.surf@gmail.com',
-        },
-        template: {
-          dir: process.cwd() + '/template/',
-          adapter: new PugAdapter(),
-          options: {
-            strict: true,
-          },
-        },
-      }),
-      inject: [ConfigService],
-    }),
     AddressModule,
     AuthModule,
     CitiesModule,
     CountriesModule,
     FeaturesModule,
+    MailModule,
     ProfilesModule,
     SectorsModule,
     StatesModule,
