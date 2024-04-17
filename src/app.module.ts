@@ -8,6 +8,7 @@ import mailConfig from './config/mail.config';
 
 import { AddressModule } from './modules/address/address.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 import { CitiesModule } from './modules/cities/cities.module';
 import { CountriesModule } from './modules/countries/countries.module';
 import { FeaturesModule } from './modules/features/features.module';
@@ -44,6 +45,7 @@ import { UniqueConstraint } from './common/decorators/is-unique.validator';
     }),
     AddressModule,
     AuthModule,
+    CategoriesModule,
     CitiesModule,
     CountriesModule,
     FeaturesModule,
