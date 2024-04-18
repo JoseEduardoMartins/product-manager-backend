@@ -25,7 +25,7 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @ApiOperation({
-    description: 'Listagem de setores utilizando filtros.',
+    description: 'Listagem de categorias utilizando filtros.',
     tags: ['Category'],
   })
   @Get()
@@ -35,7 +35,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({
-    description: 'Listagem de setor utilizando id.',
+    description: 'Listagem de categoria utilizando id.',
     tags: ['Category'],
   })
   @Get(':id')
@@ -44,7 +44,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({
-    description: 'Criação de setor.',
+    description: 'Criação de categoria.',
     tags: ['Category'],
   })
   @Post()
@@ -54,7 +54,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({
-    description: 'Atualização de setor.',
+    description: 'Atualização de categoria.',
     tags: ['Category'],
   })
   @Patch(':id')
@@ -70,7 +70,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({
-    description: 'Deleção de setor.',
+    description: 'Deleção de categoria.',
     tags: ['Category'],
   })
   @Delete(':id')

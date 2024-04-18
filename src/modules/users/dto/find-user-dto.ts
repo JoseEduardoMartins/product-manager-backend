@@ -6,6 +6,7 @@ import {
   IsBoolean,
   IsEmail,
   IsArray,
+  Length,
   IsOptional,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
@@ -14,6 +15,7 @@ import { GenericParamsDto } from '../../../common/dtos/generic-params.dto';
 export class FiltersUserDto {
   @ApiProperty({ required: false })
   @IsString()
+  @Length(0, 300)
   @IsOptional()
   name?: string;
 
@@ -24,31 +26,37 @@ export class FiltersUserDto {
 
   @ApiProperty({ required: false })
   @IsString()
+  @Length(0, 50)
   @IsOptional()
   phone?: string;
 
   @ApiProperty({ required: false })
   @IsString()
+  @Length(0, 50)
   @IsOptional()
   tax_id?: string;
 
   @ApiProperty({ required: false })
   @IsEmail()
+  @Length(0, 150)
   @IsOptional()
   email?: string;
 
   @ApiProperty({ required: false })
   @IsString()
+  @Length(0, 300)
   @IsOptional()
   password?: string;
 
   @ApiProperty({ required: false })
   @IsString()
+  @Length(0, 300)
   @IsOptional()
   photo?: string;
 
   @ApiProperty({ required: false })
   @IsString()
+  @Length(0, 6)
   @IsOptional()
   security_code?: string;
 

@@ -10,6 +10,7 @@ import { AddressModule } from './modules/address/address.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CitiesModule } from './modules/cities/cities.module';
+import { CompaniesModule } from './modules/companies/companies.module';
 import { CountriesModule } from './modules/countries/countries.module';
 import { FeaturesModule } from './modules/features/features.module';
 import { MailModule } from './modules/mail/mail.module';
@@ -47,6 +48,7 @@ import { UniqueConstraint } from './common/decorators/is-unique.validator';
     AuthModule,
     CategoriesModule,
     CitiesModule,
+    CompaniesModule,
     CountriesModule,
     FeaturesModule,
     MailModule,
