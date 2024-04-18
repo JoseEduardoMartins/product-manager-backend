@@ -14,6 +14,7 @@ import { CompaniesModule } from './modules/companies/companies.module';
 import { CountriesModule } from './modules/countries/countries.module';
 import { FeaturesModule } from './modules/features/features.module';
 import { MailModule } from './modules/mail/mail.module';
+import { ProductsModule } from './modules/products/products.module';
 import { ProfilesModule } from './modules/profiles/profiles.module';
 import { SectorsModule } from './modules/sectors/sectors.module';
 import { StatesModule } from './modules/states/states.module';
@@ -52,6 +53,7 @@ import { UniqueConstraint } from './common/decorators/is-unique.validator';
     CountriesModule,
     FeaturesModule,
     MailModule,
+    ProductsModule,
     ProfilesModule,
     SectorsModule,
     StatesModule,

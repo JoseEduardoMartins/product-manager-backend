@@ -5,27 +5,63 @@ import { CompaniesService } from './companies.service';
 import { Company } from './entities/company.entity';
 import { CreateCompanyDto } from './dto/create-category.dto';
 import { UpdateCompanyDto } from './dto/update-category.dto';
-import {
-  UpdateResponse,
-  DeleteResponse,
-} from '../../common/interfaces/repository-response';
+import { UpdateResponse } from '../../common/interfaces/repository-response';
 
 const findResponse = [
-  new Company({ id: 1, name: 'test-1' }),
-  new Company({ id: 2, name: 'test-2' }),
-  new Company({ id: 3, name: 'test-3' }),
+  new Company({
+    id: 1,
+    name: 'test-1',
+    tax_id: '12312312312',
+    sector_id: 1,
+    address_id: 1,
+  }),
+  new Company({
+    id: 2,
+    name: 'test-2',
+    tax_id: '12312312312',
+    sector_id: 1,
+    address_id: 1,
+  }),
+  new Company({
+    id: 3,
+    name: 'test-3',
+    tax_id: '12312312312',
+    sector_id: 1,
+    address_id: 1,
+  }),
 ];
-const findOneResponse = new Company({ id: 1, name: 'test-1' });
-const createResponse = new Company({ id: 1, name: 'test-1' });
-const saveResponse = new Company({ id: 1, name: 'test-1' });
+
+const findOneResponse = new Company({
+  id: 1,
+  name: 'test-1',
+  tax_id: '12312312312',
+  sector_id: 1,
+  address_id: 1,
+});
+
+const createResponse = new Company({
+  id: 1,
+  name: 'test-1',
+  tax_id: '12312312312',
+  sector_id: 1,
+  address_id: 1,
+});
+
+const createdResponse = { id: 1 };
+
+const saveResponse = new Company({
+  id: 1,
+  name: 'test-1',
+  tax_id: '12312312312',
+  sector_id: 1,
+  address_id: 1,
+});
+
 const updateResponse = new UpdateResponse({
   generatedMaps: [],
   raw: [],
   affected: 1,
 });
-const deleteResponse = new DeleteResponse({ raw: [], affected: 1 });
-
-const createdResponse = { id: 1 };
 
 describe('CompaniesService', () => {
   let sectorService: CompaniesService;
@@ -43,7 +79,6 @@ describe('CompaniesService', () => {
             create: jest.fn().mockResolvedValue(createResponse),
             save: jest.fn().mockResolvedValue(saveResponse),
             update: jest.fn().mockResolvedValue(updateResponse),
-            delete: jest.fn().mockResolvedValue(deleteResponse),
           },
         },
       ],
@@ -96,6 +131,7 @@ describe('CompaniesService', () => {
   describe('create', () => {
     const body: CreateCompanyDto = {
       name: 'teste-1',
+      tax_id: '12312312312',
       sector_id: 1,
       address_id: 1,
     };
@@ -141,12 +177,11 @@ describe('CompaniesService', () => {
       const result = await sectorService.remove(id);
 
       expect(result).toBeUndefined();
-      expect(sectorRepository.delete).toHaveBeenCalledTimes(1);
-      expect(sectorRepository.delete).toHaveBeenCalledWith({ id });
+      expect(sectorRepository.update).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an exception', () => {
-      jest.spyOn(sectorRepository, 'delete').mockRejectedValueOnce(new Error());
+      jest.spyOn(sectorRepository, 'update').mockRejectedValueOnce(new Error());
       expect(sectorService.remove(id)).rejects.toThrowError();
     });
   });

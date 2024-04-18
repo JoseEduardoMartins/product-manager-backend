@@ -78,6 +78,7 @@ describe('CompaniesController', () => {
   describe('create', () => {
     const body: CreateCompanyDto = {
       name: 'test-1',
+      tax_id: '12312312312',
       sector_id: 1,
       address_id: 1,
     };
