@@ -73,7 +73,7 @@ export class Product {
   category_id: number;
 
   @Column({
-    name: 'category_id',
+    name: 'company_id',
     type: 'int',
   })
   company_id: number;
