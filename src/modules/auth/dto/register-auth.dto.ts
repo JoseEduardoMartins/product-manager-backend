@@ -58,5 +58,5 @@ export class RegisterAuthDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
-  address: CreateAddressDto;
+  address?: CreateAddressDto;
 }

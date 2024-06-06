@@ -48,23 +48,21 @@ export class AuthController {
       where: { email },
     });
 
-    if (!user) throw new UnauthorizedException('Invalid email or password');
+    if (!user) throw new UnauthorizedException(['Invalid email or password']);
 
     if (user?.password !== password)
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException(['Invalid email or password']);
 
     if (!user.is_active)
-      throw new UnauthorizedException('User is not active, check your email');
+      throw new UnauthorizedException(['User is not active, check your email']);
 
     if (!user.is_verified)
-      throw new UnauthorizedException('User is not verified, check your email');
+      throw new UnauthorizedException([
+        'User is not verified, check your email',
+      ]);
 
     if (user.is_deleted)
-      throw new UnauthorizedException('User is deleted, check your email');
-
-    delete user.created_at;
-    delete user.updated_at;
-    delete user.deleted_at;
+      throw new UnauthorizedException(['User is deleted, check your email']);
 
     const token = await this.jwtService.signAsync({
       sub: user.id,
@@ -81,7 +79,19 @@ export class AuthController {
       domain,
     });
 
-    return { user, token };
+    delete user.password;
+    delete user.security_code;
+    delete user.is_active;
+    delete user.is_verified;
+    delete user.is_deleted;
+    delete user.created_at;
+    delete user.updated_at;
+    delete user.deleted_at;
+
+    return {
+      token,
+      user,
+    };
   }
 
   @ApiOperation({
@@ -93,7 +103,10 @@ export class AuthController {
   async register(@Body() registerAuthDto: RegisterAuthDto) {
     const { address, ...user } = registerAuthDto;
 
-    const responseAddress = await this.addressService.create(address);
+    const responseAddress = !!address
+      ? await this.addressService.create(address)
+      : { id: undefined };
+
     const security_code = generateRandomText(6, '123456789');
 
     const response = await this.usersService.create({
